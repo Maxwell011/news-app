@@ -38,16 +38,19 @@ const deleteNews = async (id) => {
     throw new Error(err.message);
   }
 };
+
 const getNewsById = async (id) => {
   try {
     const news = await News.findById(id);
     if (!news) {
       throw new Error(err.message);
     }
-
-    news.views++;
-    await news.save();
-    return news;
+    const update = await News.findByIdAndUpdate(
+      id,
+      { views: news.views + 1 },
+      { new: true }
+    );
+    return update;
   } catch (err) {
     throw new Error(err.message);
   }
@@ -56,6 +59,7 @@ const getNewsById = async (id) => {
 const getNewsByTag = async (tag) => {
   try {
     const results = await News.find({ tags: tag });
+
     return results;
   } catch (err) {
     throw new Error(err.message);

@@ -15,6 +15,6 @@ router.post("/news", createNewNews);
 router.delete("/news/:id", deleteNewsById);
 router.get("/tag/:tag", getNewsByTheTag);
 router.get("/news/:id", getNewsByTheId);
-// router.put("news/:id", updateNewsById);
+router.patch("news/:id", updateNewsById);
 
 export default router;
