@@ -60,12 +60,19 @@ const getNewsByTag = async (tag) => {
   try {
     const results = await News.find({ tags: tag });
 
-    return results;
+    const updatedResults = await Promise.all(
+      results.map(async (news) => {
+        news.views++;
+        await news.save();
+        return news;
+      })
+    );
+
+    return updatedResults;
   } catch (err) {
     throw new Error(err.message);
   }
 };
-
 export {
   getNews,
   createNews,
