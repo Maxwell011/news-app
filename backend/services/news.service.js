@@ -39,4 +39,29 @@ const deleteNews = async (id) => {
   }
 };
 
-export { getNews, createNews, updateNews, deleteNews };
+const getNewsById = async (id) => {
+  try {
+    const results = await News.findById(id);
+    return results;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const getNewsByTag = async (tag) => {
+  try {
+    const results = await News.find({ tags: tag });
+    return results;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+export {
+  getNews,
+  createNews,
+  updateNews,
+  deleteNews,
+  getNewsById,
+  getNewsByTag,
+};
