@@ -38,11 +38,16 @@ const deleteNews = async (id) => {
     throw new Error(err.message);
   }
 };
-
 const getNewsById = async (id) => {
   try {
-    const results = await News.findById(id);
-    return results;
+    const news = await News.findById(id);
+    if (!news) {
+      throw new Error(err.message);
+    }
+
+    news.views++;
+    await news.save();
+    return news;
   } catch (err) {
     throw new Error(err.message);
   }

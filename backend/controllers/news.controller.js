@@ -26,7 +26,7 @@ export const getNewsByTheId = async (req, res) => {
     }
     res.json(news);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.json(500).json({ message: "An error occured" });
   }
 };
 
