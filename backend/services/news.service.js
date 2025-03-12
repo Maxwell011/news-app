@@ -1,4 +1,4 @@
-import News from "../models/news.model";
+import News from "../models/news.model.js";
 
 const getNews = async (newsData) => {
   try {
