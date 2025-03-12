@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get("/news", getAllNews);
 router.post("/news", createNewNews);
-router.put("news/:id", updateNewsById);
-router.delete("news/:id", deleteNewsById);
+// router.put("news/:id", updateNewsById);
+router.delete("/news/:id", deleteNewsById);
 
 export default router;

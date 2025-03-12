@@ -30,6 +30,9 @@ const updateNews = async (id, newsData) => {
 const deleteNews = async (id) => {
   try {
     const results = await News.findByIdAndDelete(id);
+    if (!results) {
+      throw new Error("News not found");
+    }
     return results;
   } catch (err) {
     throw new Error(err.message);
