@@ -10,6 +10,7 @@ import {
 
 const router = express.Router();
 
+// Routes
 router.get("/news", getAllNews);
 router.post("/news", createNewNews);
 router.delete("/news/:id", deleteNewsById);
