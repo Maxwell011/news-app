@@ -26,17 +26,39 @@ export const getNewsByTheId = async (req, res) => {
     }
     res.json(news);
   } catch (err) {
-    res.json(500).json({ message: "An error occured" });
+    res.json(500).json({ message: "An error occurred" });
   }
 };
 
 // Create news
 export const createNewNews = async (req, res) => {
   try {
-    const news = await createNews(req.body);
+    console.log("Request body:", req.body); // Log the request body
+    console.log("Uploaded file:", req.file); // Log the uploaded file
+
+    const { title, text, tags } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const imageUrl = req.file.path; // Cloudinary URL
+
+    const newsData = {
+      title,
+      text,
+      image: imageUrl,
+      tags: Array.isArray(tags) ? tags : tags.split(","),
+    };
+
+    const news = await createNews(newsData);
     res.json(news);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.log(err);
+    res.status(500).json({
+      message: err.message,
+      error: err,
+    });
   }
 };
 
