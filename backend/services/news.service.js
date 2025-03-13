@@ -12,7 +12,7 @@ const getNews = async (newsData) => {
 const createNews = async (newsData) => {
   try {
     const results = await News.create(newsData);
-    return results;
+    return results; // Only return the result
   } catch (err) {
     throw new Error(err.message);
   }

@@ -10,7 +10,10 @@ import {
 // Get all news
 export const getAllNews = async (req, res) => {
   try {
-    const news = await getNews({});
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
+
+    const news = await getNews(page, limit);
     res.json(news);
   } catch (err) {
     res.status(500).json({ message: err.message });
