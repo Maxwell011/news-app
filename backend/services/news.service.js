@@ -1,8 +1,12 @@
 import News from "../models/news.model.js";
 
-const getNews = async (newsData) => {
+const getNews = async (page = 1, limit = 3) => {
   try {
-    const results = await News.find(newsData);
+    const skip = (page - 1) * limit;
+    const results = await News.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
     return results;
   } catch (err) {
     throw new Error(err.message);
