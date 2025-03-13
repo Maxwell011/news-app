@@ -1,3 +1,4 @@
+// routes/news.route.js
 import express from "express";
 import {
   getAllNews,
@@ -15,10 +16,9 @@ const upload = multer({ storage: storage });
 
 // Routes
 router.get("/news", getAllNews);
-router.post("/news", upload.single("image"), createNewNews);
+router.post("/news", upload.single("image"), createNewNews); // Use upload middleware
 router.delete("/news/:id", deleteNewsById);
 router.get("/tag/:tag", getNewsByTheTag);
 router.get("/news/:id", getNewsByTheId);
-router.patch("/news/:id", updateNewsById);
-
+router.patch("/news/:id", upload.single("image"), updateNewsById); //use upload middleware
 export default router;
