@@ -4,11 +4,11 @@ export const authenticateAdmin = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (authHeader) {
-    const token = authHeader.split(" ")[1]; 
+    const token = authHeader.split(" ")[1];
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
-        return res.status(403).json({ message: "Invalid token" }); 
+        return res.status(403).json({ message: "Invalid token" });
       }
 
       if (user.role !== "admin") {
@@ -16,8 +16,9 @@ export const authenticateAdmin = (req, res, next) => {
       }
 
       req.user = user;
-      next(); 
+      next();
     });
   } else {
-    return res.status(401).json({ message: "Authentication required" }); 
+    return res.status(401).json({ message: "Authentication required" });
+  }
 };

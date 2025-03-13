@@ -40,12 +40,7 @@ export const createNewNews = async (req, res) => {
     console.log("Uploaded file:", req.file); // Log the uploaded file
 
     const { title, text, tags } = req.body;
-
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    const imageUrl = req.file.path; // Cloudinary URL
+    const imageUrl = req.file ? req.file.path : null;
 
     const newsData = {
       title,
@@ -54,17 +49,18 @@ export const createNewNews = async (req, res) => {
       tags: Array.isArray(tags) ? tags : tags.split(","),
     };
 
+    console.log("News data to be saved:", newsData); // Log the news data
+
     const news = await createNews(newsData);
     res.json(news);
   } catch (err) {
-    console.log(err);
+    console.error("Error creating news:", err); // Log the full error
     res.status(500).json({
       message: err.message,
-      error: err,
+      error: err, // Send the full error object for debugging
     });
   }
 };
-
 // Update news by ID
 export const updateNewsById = async (req, res) => {
   try {

@@ -5,17 +5,17 @@ import NewsItem from "../components/NewsItem";
 const NewsList = () => {
   const [news, setNews] = useState([]);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadNews = async () => {
       try {
         const allNews = await fetchNews();
         setNews(allNews);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       } catch (err) {
         setError(err);
-        setLoading(false); // Set loading to false on error
+        setLoading(false);
       }
     };
 
@@ -23,7 +23,7 @@ const NewsList = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Render loading indicator
+    return <div>Loading...</div>;
   }
 
   if (error) {
@@ -32,7 +32,6 @@ const NewsList = () => {
 
   return (
     <div>
-      <h1>News List</h1>
       {news.map((article) => (
         <NewsItem key={article._id} news={article} />
       ))}

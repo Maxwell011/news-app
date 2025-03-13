@@ -8,9 +8,12 @@ function App() {
     <>
       <Navbar />
       <div className="pt-32">
-        <h1 className="text-black text-center text-6xl mt-20">Hello Vite</h1>
-        <NewsList />
+        <h1 className="text-black text-center text-6xl mt-20 uppercase">
+          {" "}
+          Kiras Newsroom
+        </h1>
       </div>
+      <NewsList />
     </>
   );
 }

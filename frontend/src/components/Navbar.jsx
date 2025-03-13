@@ -9,9 +9,9 @@ const Navbar = () => {
       <nav className="flex flex-col gap-7 pt-10 ">
         {[
           { name: "Home", path: "/" },
-          { name: "About", path: "/about" },
-          { name: "Admissions", path: "/admissions" },
-          { name: "Programs", path: "/programs" },
+          { name: "Stories", path: "/about" },
+          { name: "Impact", path: "/admissions" },
+          { name: "Newsroom", path: "/programs" },
           { name: "Media", path: "/media" },
           { name: "Contact", path: "/contact" },
         ].map((link) => (
