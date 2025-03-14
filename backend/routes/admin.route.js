@@ -10,7 +10,7 @@ const router = express.Router();
 
 // Authentication Routes
 router.post("/register", registerAdmin);
-router.post("/login", loginAdmin);
+router.post("/login", loginAdmin); // Updated route
 
 // Protected Admin Routes
 router.get("/profile", authenticateAdmin, getAdminProfile);
