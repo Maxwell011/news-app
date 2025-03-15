@@ -8,7 +8,7 @@ const NewsList = () => {
   return (
     <div className="grid grid-cols-3 gap-6 p-4">
       {news.map((item) => (
-        <NewsItem key={item._id} news={item} /> // ✅ Use NewsItem component
+        <NewsItem key={item._id} news={item} />
       ))}
       {loading && (
         <p className="text-center col-span-3">Loading more news...</p>

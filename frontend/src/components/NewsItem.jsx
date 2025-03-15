@@ -3,6 +3,12 @@ import { FaRegEye } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const NewsItem = ({ news }) => {
+  console.log("NewsItem news prop:", news);
+
+  if (!news || !news.text) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="flex flex-col gap-4 p-4 rounded-lg">
       <Link to={`/news/${news._id}`} className="hover:opacity-80 transition">

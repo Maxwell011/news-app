@@ -24,9 +24,13 @@ const useNewsInfiniteScroll = () => {
       }
 
       setNews((prevNews) => {
-        const existingIds = new Set(prevNews.map((n) => n._id)); // ✅ Track existing news IDs
-        const uniqueNews = newNews.filter((n) => !existingIds.has(n._id)); // ✅ Add only new items
-        return [...prevNews, ...uniqueNews]; // ✅ Append only unique news
+        const existingIds = new Map(prevNews.map((n) => [n._id, n]));
+        newNews.forEach((n) => {
+          if (!existingIds.has(n._id)) {
+            existingIds.set(n._id, n);
+          }
+        });
+        return Array.from(existingIds.values());
       });
 
       setPage((prevPage) => prevPage + 1);
@@ -45,11 +49,11 @@ const useNewsInfiniteScroll = () => {
     const handleScroll = () => {
       if (
         window.innerHeight + window.scrollY >=
-          document.body.offsetHeight - 100 &&
+          document.body.offsetHeight - 50 &&
         hasMore &&
         !loading
       ) {
-        fetchNews();
+        fetchNews(); // ✅ Trigger next page load when scrolling near bottom
       }
     };
 
