@@ -77,6 +77,7 @@ const getNewsByTag = async (tag) => {
     throw new Error(err.message);
   }
 };
+
 export {
   getNews,
   createNews,

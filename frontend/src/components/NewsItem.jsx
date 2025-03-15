@@ -7,8 +7,8 @@ const NewsItem = ({ news }) => {
     <div className="flex flex-col gap-4">
       <Link to={`/news/${news._id}`}>
         <img src={news.image} alt={news.title} className="w-[500px]" />
-        <h2 className="font-sans text-4xl">{news.title}</h2>
-        <p className="text-3xl">{news.text}</p>
+        <h2 className="font-sans text-3xl">{news.title}</h2>
+        <p className="text-2xl">{news.text}</p>
       </Link>
       <div className="flex items-center gap-2">
         {news.tags.map((tag) => (

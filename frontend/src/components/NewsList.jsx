@@ -31,7 +31,7 @@ const NewsList = () => {
   }
 
   return (
-    <div>
+    <div className="grid grid-cols-3 gap-4">
       {news.map((article) => (
         <NewsItem key={article._id} news={article} />
       ))}
