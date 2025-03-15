@@ -15,9 +15,9 @@ function App() {
           path="/"
           element={
             <>
-              <div className="pt-32">
-                <h1 className="text-black text-center text-6xl mt-20 uppercase">
-                  Kiras Newsroom
+              <div className="pt-32 pb-32 pl-14">
+                <h1 className="text-black text-9xl mt-20 uppercase text-justify">
+                  We <br /> update <br /> the <br /> world
                 </h1>
               </div>
               <NewsList />
