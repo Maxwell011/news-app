@@ -12,12 +12,11 @@ const NewsItem = ({ news }) => {
       </Link>
       <div className="flex items-center gap-2">
         {news.tags.map((tag) => (
-          <span
-            key={tag}
-            className="border p-[5px] rounded-[15px] border-[#000] capitalize"
-          >
-            {tag}
-          </span>
+          <Link key={tag} to={`/tag/${tag}`}>
+            <span className="border p-[5px] rounded-[15px] border-[#000] capitalize">
+              {tag}
+            </span>
+          </Link>
         ))}
       </div>
       <p className="flex items-center gap-2 text-2xl">
