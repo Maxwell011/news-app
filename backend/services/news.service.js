@@ -45,15 +45,14 @@ const deleteNews = async (id) => {
 
 const getNewsById = async (id) => {
   try {
-    const news = await News.findById(id);
-    if (!news) {
-      throw new Error(err.message);
-    }
     const update = await News.findByIdAndUpdate(
       id,
-      { views: news.views + 1 },
+      { $inc: { views: 1 } }, // Increment views by 1
       { new: true }
     );
+    if (!update) {
+      throw new Error("News not found");
+    }
     return update;
   } catch (err) {
     throw new Error(err.message);

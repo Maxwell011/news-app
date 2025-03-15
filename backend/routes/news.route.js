@@ -1,4 +1,3 @@
-// routes/news.route.js
 import express from "express";
 import {
   getAllNews,
@@ -7,6 +6,8 @@ import {
   deleteNewsById,
   getNewsByTheId,
   getNewsByTheTag,
+  likeNewsById,
+  unlikeNewsById,
 } from "../controllers/news.controller.js";
 import multer from "multer";
 
@@ -21,4 +22,8 @@ router.delete("/news/:id", deleteNewsById);
 router.get("/tag/:tag", getNewsByTheTag);
 router.get("/news/:id", getNewsByTheId);
 router.patch("/news/:id", upload.single("image"), updateNewsById);
+router.patch("/news/:id/like", likeNewsById);
+router.patch("/news/:id/unlike", unlikeNewsById);
+console.log("news like route registered");
+
 export default router;
