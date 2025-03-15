@@ -35,19 +35,34 @@ export const registerAdmin = async (req, res) => {
   }
 };
 
-// Login Admin (No express-validator)
 export const loginAdmin = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const admin = await Admin.findOne({ email });
-    console.log("Admin Found:", admin);
+    const { email, password } = req.body; // Get password from req.body
+    const admin = await Admin.findOne({ email }); // Get admin from database
+
     if (!admin) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
+
     const isMatch = await bcrypt.compare(password, admin.password);
-  } catch (err) {
-    console.error("Error in loginAdmin:", err);
-    res.status(500).json({ message: err.message });
+    console.log("Password Match:", isMatch);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Add your successful login response here
+    const token = jwt.sign(
+      { id: admin._id, role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    res.json({
+      token,
+      admin: { id: admin._id, username: admin.username, email: admin.email },
+    });
+  } catch (bcryptErr) {
+    console.error("bcrypt.compare error:", bcryptErr);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
