@@ -18,7 +18,7 @@ export const authenticateAdmin = (req, res, next) => {
       return res.status(403).json({ message: "Unauthorized access" });
     }
 
-    req.user = decoded; // Attach user info to request
+    req.user = decoded;
     next();
   });
 };

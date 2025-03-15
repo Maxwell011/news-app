@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { body, validationResult } from "express-validator";
 
-// Register Admin (Keep express-validator here, or remove and do manual validation)
 export const registerAdmin = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -37,8 +36,8 @@ export const registerAdmin = async (req, res) => {
 
 export const loginAdmin = async (req, res) => {
   try {
-    const { email, password } = req.body; // Get password from req.body
-    const admin = await Admin.findOne({ email }); // Get admin from database
+    const { email, password } = req.body;
+    const admin = await Admin.findOne({ email });
 
     if (!admin) {
       return res.status(400).json({ message: "Invalid credentials" });
@@ -50,7 +49,6 @@ export const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Add your successful login response here
     const token = jwt.sign(
       { id: admin._id, role: "admin" },
       process.env.JWT_SECRET,
