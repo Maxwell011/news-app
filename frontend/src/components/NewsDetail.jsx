@@ -40,15 +40,15 @@ const NewsDetail = () => {
       <h1>{news.title}</h1>
       <img src={news.image} alt={news.title} />
       <p>{news.text}</p>
-      <div className="tags">
+      <div className="">
         {news.tags.map((tag) => (
-          <span key={tag} className="tag">
+          <span key={tag} className="">
             {tag}
           </span>
         ))}
       </div>
-      <p className="views">Views: {news.views}</p>
-      <p className="date">
+      <p className="">Views: {news.views}</p>
+      <p className="">
         Published on: {new Date(news.createdAt).toDateString()}
       </p>
     </div>
