@@ -75,3 +75,23 @@ export const deleteNews = async (id) => {
     throw error;
   }
 };
+
+export const likeNews = async (id) => {
+  try {
+    const response = await axios.patch(`${API_URL}/${id}/like`);
+    return response.data;
+  } catch (error) {
+    console.error("Error liking news:", error);
+    throw error;
+  }
+};
+
+export const unlikeNews = async (id) => {
+  try {
+    const response = await axios.patch(`${API_URL}/${id}/unlike`);
+    return response.data;
+  } catch (error) {
+    console.error("Error unlinking news:", error);
+    throw error;
+  }
+};

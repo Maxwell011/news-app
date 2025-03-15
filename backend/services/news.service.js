@@ -78,6 +78,39 @@ const getNewsByTag = async (tag) => {
   }
 };
 
+const likeNews = async (id) => {
+  try {
+    const news = await News.findById(id);
+    if (!news) {
+      throw new Error("News not found");
+    }
+
+    news.likes++;
+    await news.save();
+    return news;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const unlikeNews = async (id) => {
+  try {
+    const news = await News.findById(id);
+    if (!news) {
+      throw new Error("News not found");
+    }
+
+    if (news.likes > 0) {
+      // Ensure likes don't go below 0
+      news.likes--;
+      await news.save();
+    }
+    return news;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 export {
   getNews,
   createNews,
@@ -85,4 +118,6 @@ export {
   deleteNews,
   getNewsById,
   getNewsByTag,
+  likeNews,
+  unlikeNews,
 };

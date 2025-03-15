@@ -5,6 +5,8 @@ import {
   deleteNews,
   getNewsById,
   getNewsByTag,
+  likeNews,
+  unlikeNews,
 } from "../services/news.service.js";
 import cloudinary from "cloudinary";
 import { v4 as uuidv4 } from "uuid";
@@ -109,6 +111,26 @@ export const deleteNewsById = async (req, res) => {
 export const getNewsByTheTag = async (req, res) => {
   try {
     const news = await getNewsByTag(req.params.tag);
+    res.json(news);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Like news by ID
+export const likeNewsById = async (req, res) => {
+  try {
+    const news = await likeNews(req.params.id);
+    res.json(news);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Unlike news by ID
+export const unlikeNewsById = async (req, res) => {
+  try {
+    const news = await unlikeNews(req.params.id);
     res.json(news);
   } catch (err) {
     res.status(500).json({ message: err.message });
