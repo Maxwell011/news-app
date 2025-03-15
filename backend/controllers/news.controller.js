@@ -23,34 +23,31 @@ cloudinary.config({
 
 // Get all news
 export const getAllNews = async (req, res) => {
+  let totalNews;
+
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 3;
     const skip = (page - 1) * limit;
 
-    console.log(
-      `📢 Incoming Request - Page: ${page}, Limit: ${limit}, Skipping: ${skip}`
-    );
-
-    const totalNews = await News.countDocuments();
+    totalNews = await News.countDocuments();
     const news = await News.find()
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
 
-    const hasMore = skip + news.length < totalNews; // ✅ Correct hasMore logic
+    const filteredNews = news.filter((item) => item.text !== undefined);
 
-    console.log(
-      `✅ Sent ${news.length} News Articles for Page ${page} | hasMore: ${hasMore}`
-    );
+    const hasMore = skip + filteredNews.length < totalNews;
 
-    res.json({ data: news, hasMore });
+    res.json({ data: filteredNews, hasMore });
   } catch (err) {
     console.error("Error fetching news:", err.message);
-    res.status(500).json({ message: err.message });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
   }
 };
-
 // Get news by ID
 export const getNewsByTheId = async (req, res) => {
   try {

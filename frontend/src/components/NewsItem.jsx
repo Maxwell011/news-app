@@ -4,25 +4,25 @@ import { Link } from "react-router-dom";
 
 const NewsItem = ({ news }) => {
   return (
-    <div className="flex flex-col gap-4">
-      <Link to={`/news/${news._id}`}>
-        <img
-          src={news.image}
-          alt={news.title}
-          className="w-[500px] rounded-md"
-        />
-        <h2 className="font-sans text-3xl mb-2.5">{news.title}</h2>
-        <p className="text-2xl">{news.text}</p>
+    <div className="flex flex-col gap-4 p-4 rounded-lg">
+      <Link to={`/news/${news._id}`} className="hover:opacity-80 transition">
+        <img src={news.image} alt={news.title} className="w-full rounded-md" />
+        <h2 className="font-sans text-xl font-bold mt-2 capitalize">
+          {news.title}
+        </h2>
+        <p className="text-gray-700">{news.text.slice(0, 100)}...</p>
       </Link>
-      <div className="flex items-center gap-2">
-        {news.tags.map((tag) => (
-          <Link key={tag} to={`/tag/${tag}`}>
-            <span className="border p-[5px] rounded-[15px] border-[#000] capitalize">
-              {tag}
-            </span>
-          </Link>
-        ))}
-        <p className="flex items-center gap-2 text-2xl">
+      <div className="flex items-center gap-3 text-gray-600 text-sm">
+        <div className="flex gap-2">
+          {news.tags.map((tag) => (
+            <Link key={tag} to={`/tag/${tag}`}>
+              <span className="border px-3 py-1 rounded-full border-gray-500 text-xs capitalize">
+                {tag}
+              </span>
+            </Link>
+          ))}
+        </div>
+        <p className="flex items-center gap-1">
           <FaRegEye /> {news.views}
         </p>
       </div>
