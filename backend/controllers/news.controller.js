@@ -8,6 +8,9 @@ import {
 } from "../services/news.service.js";
 import cloudinary from "cloudinary";
 import { v4 as uuidv4 } from "uuid";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
