@@ -1,4 +1,3 @@
-// components/NewsDetail.jsx
 import React, { useState, useEffect } from "react";
 import { fetchNewsById } from "../services/newsService";
 import { useParams } from "react-router-dom";
@@ -49,6 +48,9 @@ const NewsDetail = () => {
         ))}
       </div>
       <p className="views">Views: {news.views}</p>
+      <p className="date">
+        Published on: {new Date(news.createdAt).toDateString()}
+      </p>
     </div>
   );
 };

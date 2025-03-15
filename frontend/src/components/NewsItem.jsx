@@ -4,7 +4,7 @@ import { FaRegEye } from "react-icons/fa6";
 const NewsItem = ({ news }) => {
   return (
     <div className="flex flex-col gap-4">
-      <img src={news.image} alt={news.title} />
+      <img src={news.image} alt={news.title} className="w-[500px]" />
       <h2 className="font-sans text-4xl">{news.title}</h2>
       {/* <p>{news.text.substring(0, 100)}...</p>{" "} */}
       <p className="text-3xl">{news.text}</p>{" "}
