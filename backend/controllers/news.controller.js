@@ -11,6 +11,7 @@ import {
 import cloudinary from "cloudinary";
 import { v4 as uuidv4 } from "uuid";
 import dotenv from "dotenv";
+import News from "../models/news.model.js";
 
 dotenv.config();
 
@@ -25,10 +26,27 @@ export const getAllNews = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 3;
+    const skip = (page - 1) * limit;
 
-    const news = await getNews(page, limit);
-    res.json(news);
+    console.log(
+      `📢 Incoming Request - Page: ${page}, Limit: ${limit}, Skipping: ${skip}`
+    );
+
+    const totalNews = await News.countDocuments();
+    const news = await News.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const hasMore = skip + news.length < totalNews; // ✅ Correct hasMore logic
+
+    console.log(
+      `✅ Sent ${news.length} News Articles for Page ${page} | hasMore: ${hasMore}`
+    );
+
+    res.json({ data: news, hasMore });
   } catch (err) {
+    console.error("Error fetching news:", err.message);
     res.status(500).json({ message: err.message });
   }
 };

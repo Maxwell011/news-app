@@ -16,7 +16,7 @@ const getNews = async (page = 1, limit = 3) => {
 const createNews = async (newsData) => {
   try {
     const results = await News.create(newsData);
-    return results; // Only return the result
+    return results;
   } catch (err) {
     throw new Error(err.message);
   }
@@ -47,7 +47,7 @@ const getNewsById = async (id) => {
   try {
     const update = await News.findByIdAndUpdate(
       id,
-      { $inc: { views: 1 } }, // Increment views by 1
+      { $inc: { views: 1 } },
       { new: true }
     );
     if (!update) {
@@ -100,7 +100,7 @@ const unlikeNews = async (id) => {
     }
 
     if (news.likes > 0) {
-      // Ensure likes don't go below 0
+      // Ensure likes don't go below 0 that is what I am doing here
       news.likes--;
       await news.save();
     }
