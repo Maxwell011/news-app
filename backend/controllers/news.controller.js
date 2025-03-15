@@ -6,6 +6,14 @@ import {
   getNewsById,
   getNewsByTag,
 } from "../services/news.service.js";
+import cloudinary from "cloudinary";
+import { v4 as uuidv4 } from "uuid";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Get all news
 export const getAllNews = async (req, res) => {
@@ -36,11 +44,20 @@ export const getNewsByTheId = async (req, res) => {
 // Create news
 export const createNewNews = async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Log the request body
-    console.log("Uploaded file:", req.file); // Log the uploaded file
+    console.log("Request body:", req.body);
+    console.log("Uploaded file:", req.file);
 
     const { title, text, tags } = req.body;
-    const imageUrl = req.file ? req.file.path : null;
+
+    let imageUrl = null;
+    if (req.file) {
+      const base64Image = req.file.buffer.toString("base64");
+      const result = await cloudinary.uploader.upload(
+        `data:${req.file.mimetype};base64,${base64Image}`,
+        { public_id: uuidv4() }
+      );
+      imageUrl = result.secure_url;
+    }
 
     const newsData = {
       title,
@@ -49,18 +66,19 @@ export const createNewNews = async (req, res) => {
       tags: Array.isArray(tags) ? tags : tags.split(","),
     };
 
-    console.log("News data to be saved:", newsData); // Log the news data
+    console.log("News data to be saved:", newsData);
 
     const news = await createNews(newsData);
     res.json(news);
   } catch (err) {
-    console.error("Error creating news:", err); // Log the full error
+    console.error("Error creating news:", err);
     res.status(500).json({
       message: err.message,
-      error: err, // Send the full error object for debugging
+      error: err,
     });
   }
 };
+
 // Update news by ID
 export const updateNewsById = async (req, res) => {
   try {

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/news";
+const API_URL = "http://localhost:5000/api/news";
 
 // Fetch news with pagination
 export const fetchNews = async (page = 1, limit = 3) => {
@@ -38,7 +38,11 @@ export const fetchNewsByTag = async (tag) => {
 // Create new news
 export const createNews = async (newsData) => {
   try {
-    const response = await axios.post(API_URL, newsData);
+    const formData = new FormData();
+    for (const key in newsData) {
+      formData.append(key, newsData[key]);
+    }
+    const response = await axios.post(API_URL, formData);
     return response.data;
   } catch (error) {
     console.error("Error creating news:", error);
@@ -49,7 +53,11 @@ export const createNews = async (newsData) => {
 // Update news by ID
 export const updateNews = async (id, newsData) => {
   try {
-    const response = await axios.patch(`${API_URL}/${id}`, newsData);
+    const formData = new FormData();
+    for (const key in newsData) {
+      formData.append(key, newsData[key]);
+    }
+    const response = await axios.patch(`${API_URL}/${id}`, formData);
     return response.data;
   } catch (error) {
     console.error("Error updating news:", error);
