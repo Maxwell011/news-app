@@ -5,21 +5,49 @@ import {
   deleteNews,
   getNewsById,
   getNewsByTag,
+  likeNews,
+  unlikeNews,
 } from "../services/news.service.js";
+import cloudinary from "cloudinary";
+import { v4 as uuidv4 } from "uuid";
+import dotenv from "dotenv";
+import News from "../models/news.model.js";
+
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Get all news
 export const getAllNews = async (req, res) => {
+  let totalNews;
+
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 3;
+    const skip = (page - 1) * limit;
 
-    const news = await getNews(page, limit);
-    res.json(news);
+    totalNews = await News.countDocuments();
+    const news = await News.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const filteredNews = news.filter((item) => item.text !== undefined);
+
+    const hasMore = skip + filteredNews.length < totalNews;
+
+    res.json({ data: filteredNews, hasMore });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error fetching news:", err.message);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: err.message });
   }
 };
-
 // Get news by ID
 export const getNewsByTheId = async (req, res) => {
   try {
@@ -36,11 +64,20 @@ export const getNewsByTheId = async (req, res) => {
 // Create news
 export const createNewNews = async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Log the request body
-    console.log("Uploaded file:", req.file); // Log the uploaded file
+    console.log("Request body:", req.body);
+    console.log("Uploaded file:", req.file);
 
     const { title, text, tags } = req.body;
-    const imageUrl = req.file ? req.file.path : null;
+
+    let imageUrl = null;
+    if (req.file) {
+      const base64Image = req.file.buffer.toString("base64");
+      const result = await cloudinary.uploader.upload(
+        `data:${req.file.mimetype};base64,${base64Image}`,
+        { public_id: uuidv4() }
+      );
+      imageUrl = result.secure_url;
+    }
 
     const newsData = {
       title,
@@ -49,18 +86,19 @@ export const createNewNews = async (req, res) => {
       tags: Array.isArray(tags) ? tags : tags.split(","),
     };
 
-    console.log("News data to be saved:", newsData); // Log the news data
+    console.log("News data to be saved:", newsData);
 
     const news = await createNews(newsData);
     res.json(news);
   } catch (err) {
-    console.error("Error creating news:", err); // Log the full error
+    console.error("Error creating news:", err);
     res.status(500).json({
       message: err.message,
-      error: err, // Send the full error object for debugging
+      error: err,
     });
   }
 };
+
 // Update news by ID
 export const updateNewsById = async (req, res) => {
   try {
@@ -88,6 +126,26 @@ export const deleteNewsById = async (req, res) => {
 export const getNewsByTheTag = async (req, res) => {
   try {
     const news = await getNewsByTag(req.params.tag);
+    res.json(news);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Like news by ID
+export const likeNewsById = async (req, res) => {
+  try {
+    const news = await likeNews(req.params.id);
+    res.json(news);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Unlike news by ID
+export const unlikeNewsById = async (req, res) => {
+  try {
+    const news = await unlikeNews(req.params.id);
     res.json(news);
   } catch (err) {
     res.status(500).json({ message: err.message });

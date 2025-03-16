@@ -16,7 +16,7 @@ const getNews = async (page = 1, limit = 3) => {
 const createNews = async (newsData) => {
   try {
     const results = await News.create(newsData);
-    return results; // Only return the result
+    return results;
   } catch (err) {
     throw new Error(err.message);
   }
@@ -45,15 +45,14 @@ const deleteNews = async (id) => {
 
 const getNewsById = async (id) => {
   try {
-    const news = await News.findById(id);
-    if (!news) {
-      throw new Error(err.message);
-    }
     const update = await News.findByIdAndUpdate(
       id,
-      { views: news.views + 1 },
+      { $inc: { views: 1 } },
       { new: true }
     );
+    if (!update) {
+      throw new Error("News not found");
+    }
     return update;
   } catch (err) {
     throw new Error(err.message);
@@ -77,6 +76,40 @@ const getNewsByTag = async (tag) => {
     throw new Error(err.message);
   }
 };
+
+const likeNews = async (id) => {
+  try {
+    const news = await News.findById(id);
+    if (!news) {
+      throw new Error("News not found");
+    }
+
+    news.likes++;
+    await news.save();
+    return news;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const unlikeNews = async (id) => {
+  try {
+    const news = await News.findById(id);
+    if (!news) {
+      throw new Error("News not found");
+    }
+
+    if (news.likes > 0) {
+      // Ensure likes don't go below 0 that is what I am doing here
+      news.likes--;
+      await news.save();
+    }
+    return news;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 export {
   getNews,
   createNews,
@@ -84,4 +117,6 @@ export {
   deleteNews,
   getNewsById,
   getNewsByTag,
+  likeNews,
+  unlikeNews,
 };

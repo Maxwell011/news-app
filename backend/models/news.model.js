@@ -8,6 +8,7 @@ const newsSchema = mongoose.Schema(
     tags: [{ type: String, required: true }],
     // slug: { type: String, unique: true, required: true },
     views: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
